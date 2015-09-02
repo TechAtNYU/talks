@@ -12,6 +12,7 @@ machine:
 
 dependencies:
   post:
+    - npm install -g grunt-cli
     - cd $HOME/$CIRCLE_PROJECT_REPONAME/infrastructure/introduction && npm install && grunt dist
 
 test:
