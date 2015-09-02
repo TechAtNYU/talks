@@ -1,0 +1,27 @@
+general:
+  branches:
+    only:
+      - master
+
+machine:
+  timezone:
+    America/Los_Angeles
+  node:
+    version: 
+      0.12.2
+
+dependencies:
+  post:
+    - cd $HOME/$CIRCLE_PROJECT_REPONAME/infrastructure/introduction && npm install && grunt dist
+
+test:
+  override:
+    - echo "No tests are needed"
+
+deployment:
+  production:
+    branch: master
+    commands:
+      - mkdir -p $HOME/$CIRCLE_PROJECT_REPONAME/app/infrastructure/introduction/
+      - mv $HOME/$CIRCLE_PROJECT_REPONAME/infrastructure/introduction/dist/ $HOME/$CIRCLE_PROJECT_REPONAME/app/infrastructure/introduction/
+      - turbolift -u $RAXUSER -a $RAXAPIKEY --os-rax-auth $RAXREGION upload -s $HOME/$CIRCLE_PROJECT_REPONAME/app/ -c $CONTAINER
